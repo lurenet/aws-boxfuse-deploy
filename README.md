@@ -1,7 +1,7 @@
 This pipeline create ec2 instances for build and push to stage boxfuse artifact using terraform and ansible tools.
 
 You need to setup your credentials for dockerhud account in Jenkinsfile:
-  DHUB_USERNAME  = "username"\n
+- DHUB_USERNAME  = "username"
   DHUB_PASSWORD  = "password"
   DHUB_EMAIL     = "user@gmail.com"
 
