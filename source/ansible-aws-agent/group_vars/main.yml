@@ -1,0 +1,4 @@
+---
+project_path: /tmp/boxfuse
+project_file: hello-1.0.war
+dockerhub_name: nickmas/boxfuse

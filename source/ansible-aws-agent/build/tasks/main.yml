@@ -1,0 +1,26 @@
+---
+- include_vars: config/dockerhub.yml
+
+- include_vars: group_vars/main.yml
+
+- name: ensure dokerfile is present
+  copy:
+    src: Dockerfile
+    dest: "{{ project_path }}/Dockerfile"
+    force: yes
+
+- name: ensure access to docker hub is present
+  docker_login:
+    username: "{{ dhub_username }}"
+    password: "{{ dhub_password }}"
+    email: "{{ dhub_email }}"
+
+- name: ensure image is building, tagging & pushing to docker hub
+  docker_image:
+    path: "{{ project_path }}"
+    name: "{{ dockerhub_name }}"
+    push: yes
+
+- name: ensure access to docker hub is absent
+  docker_login:
+    state: absent

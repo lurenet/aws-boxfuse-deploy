@@ -1,0 +1,17 @@
+---
+- name: prepearing build environment
+  hosts: build
+  become: yes
+  gather_facts: false
+  roles:
+    - common
+    - build
+
+- name: prepearing prod environment
+  hosts: prod
+  become: yes
+  gather_facts: false
+  roles:
+    - common
+    - run
+

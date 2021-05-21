@@ -1,0 +1,69 @@
+---
+- include_vars: group_vars/main.yml
+
+- name: ensure docker packages is present
+  apt:
+    name:
+      - apt-transport-https
+      - ca-certificates
+      - curl
+      - software-properties-common
+      - python-pip
+    state: present
+    update_cache: yes
+  tags:
+    - docker
+
+- name: ensure dockers official GPG is present
+  apt_key:
+    url: https://download.docker.com/linux/ubuntu/gpg
+    state: present
+  tags:
+    - docker
+
+- name: ensure we have correct fingerprint key
+  apt_key:
+    id: 0EBFCD88
+    state: present
+  tags:
+    - docker
+
+- name: get release
+  command: lsb_release -sc
+  register: release
+
+- name: ensure we have stable repository
+  apt_repository:
+    repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ release.stdout }} stable
+    state: present
+    update_cache: yes
+  tags:
+    - docker
+
+- name: ensure apt packages is updated
+  apt:
+    update_cache: yes
+  tags:
+    - docker
+
+- name: ensure docker is present
+  apt:
+    name: docker-ce
+    state: present
+    update_cache: yes
+  tags:
+    - docker
+
+- name: ensure docker-py is present
+  pip:
+    name: "{{ item.name }}"
+    version: "{{ item.version }}"
+    state: present
+  with_items:
+    - { name: docker, version: 2.0.0 }
+    - { name: docker-py, version: 1.10.6 }
+
+- name: ensure directory exist
+  file:
+    path: "{{ project_path }}"
+    state: directory

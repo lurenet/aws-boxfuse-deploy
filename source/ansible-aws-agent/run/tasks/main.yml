@@ -1,0 +1,11 @@
+---
+- include_vars: group_vars/main.yml
+
+- name: Restart a container
+  docker_container:
+    name: tomcat
+    image: "{{ dockerhub_name }}"
+    state: started
+    restart: yes
+    ports:
+      - "80:8080"
